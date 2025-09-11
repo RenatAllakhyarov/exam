@@ -1,11 +1,13 @@
-import { type ReactElement } from 'react';
-import './style.css';
+import { type ReactElement } from "react";
+import "./style.css";
 
 interface IEmptyStateProps {
     message?: string;
 }
 
-const EmptyState = ({ message = "Ничего не найдено." }: IEmptyStateProps): ReactElement => {
+const EmptyState = ({
+    message = "Ничего не найдено.",
+}: IEmptyStateProps): ReactElement => {
     return (
         <div className="empty-state-container">
             <p className="empty-message secondary-text">{message}</p>

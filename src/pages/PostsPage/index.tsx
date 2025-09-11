@@ -1,15 +1,21 @@
-import Select from '../../components/Select';
-import Loader from '../../components/Loader';
-import PostCard from '../../components/PostCard';
-import SearchBar from '../../components/SearchBar';
-import ErrorState from '../../components/ErrorState';
-import EmptyState from '../../components/EmptyState';
-import CustomButton from '../../components/CustomButton';
-import useDebouncedValue from '../../hooks/useDebouncedValue';
-import { type ReactElement, useState, useEffect, useCallback, useMemo } from 'react';
-import { useUsersCache } from '../../context/UserCacheContext';
-import { postsApi } from '../../api/posts';
-import { type IPost } from '../../types';
+import Select from "../../components/Select";
+import Loader from "../../components/Loader";
+import PostCard from "../../components/PostCard";
+import SearchBar from "../../components/SearchBar";
+import ErrorState from "../../components/ErrorState";
+import EmptyState from "../../components/EmptyState";
+import CustomButton from "../../components/CustomButton";
+import useDebouncedValue from "../../hooks/useDebouncedValue";
+import { useUsersCache } from "../../context/UserCacheContext";
+import { postsApi } from "../../api/posts";
+import { type IPost } from "../../types";
+import {
+    type ReactElement,
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+} from "react";
 import "./style.css";
 
 const POSTS_PER_PAGE = 10;
@@ -19,10 +25,12 @@ const PostsPage = (): ReactElement => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState<string>("");
     const debouncedSearchTerm = useDebouncedValue(searchTerm, 300);
 
-    const [selectedAuthorId, setSelectedAuthorId] = useState<string | number>('');
+    const [selectedAuthorId, setSelectedAuthorId] = useState<string | number>(
+        ""
+    );
 
     const { users, loading: usersLoading, error: usersError } = useUsersCache();
 
@@ -56,8 +64,11 @@ const PostsPage = (): ReactElement => {
         if (!users) {
             return [];
         }
-        const allAuthorsOption = { value: '', label: 'Все авторы' };
-        return [allAuthorsOption, ...users.map(user => ({ value: user.id, label: user.name }))];
+        const allAuthorsOption = { value: "", label: "Все авторы" };
+        return [
+            allAuthorsOption,
+            ...users.map((user) => ({ value: user.id, label: user.name })),
+        ];
     }, [users]);
 
     const filteredPosts = useMemo(() => {
@@ -67,16 +78,18 @@ const PostsPage = (): ReactElement => {
         let currentFilteredPosts = allPosts;
 
         if (debouncedSearchTerm) {
-            currentFilteredPosts = currentFilteredPosts.filter(post =>
-                post.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+            currentFilteredPosts = currentFilteredPosts.filter((post) =>
+                post.title
+                    .toLowerCase()
+                    .includes(debouncedSearchTerm.toLowerCase())
             );
         }
 
         if (selectedAuthorId) {
             const authorIdNum = Number(selectedAuthorId);
             if (!isNaN(authorIdNum)) {
-                currentFilteredPosts = currentFilteredPosts.filter(post =>
-                    post.userId === authorIdNum
+                currentFilteredPosts = currentFilteredPosts.filter(
+                    (post) => post.userId === authorIdNum
                 );
             }
         }
@@ -84,12 +97,12 @@ const PostsPage = (): ReactElement => {
         return currentFilteredPosts;
     }, [allPosts, debouncedSearchTerm, selectedAuthorId]);
 
-     const postsToDisplay = useMemo(() => {
+    const postsToDisplay = useMemo(() => {
         return filteredPosts.slice(0, displayCount);
     }, [filteredPosts, displayCount]);
 
     const handleShowMore = () => {
-        setDisplayCount(prevCount => prevCount + POSTS_PER_PAGE);
+        setDisplayCount((prevCount) => prevCount + POSTS_PER_PAGE);
     };
 
     const hasMorePosts = displayCount < filteredPosts.length;
@@ -99,11 +112,21 @@ const PostsPage = (): ReactElement => {
     }
 
     if (error) {
-        return <ErrorState message={`Ошибка загрузки постов: ${error}`} onRetry={fetchPosts} />;
+        return (
+            <ErrorState
+                message={`Ошибка загрузки постов: ${error}`}
+                onRetry={fetchPosts}
+            />
+        );
     }
 
     if (usersError) {
-        return <ErrorState message={`Ошибка загрузки данных пользователей: ${usersError}`} onRetry={() => window.location.reload()} />;
+        return (
+            <ErrorState
+                message={`Ошибка загрузки данных пользователей: ${usersError}`}
+                onRetry={() => window.location.reload()}
+            />
+        );
     }
 
     return (
@@ -126,7 +149,7 @@ const PostsPage = (): ReactElement => {
             {postsToDisplay.length === 0 ? (
                 <EmptyState
                     message={
-                        (debouncedSearchTerm || selectedAuthorId)
+                        debouncedSearchTerm || selectedAuthorId
                             ? "Посты не найдены по заданным критериям."
                             : "На данный момент постов нет."
                     }
@@ -134,13 +157,13 @@ const PostsPage = (): ReactElement => {
             ) : (
                 <>
                     <div className="post-list">
-                        {postsToDisplay.map(post => (
+                        {postsToDisplay.map((post) => (
                             <PostCard key={post.id} post={post} />
                         ))}
                     </div>
                     {hasMorePosts && (
                         <div className="show-more-container">
-                            <CustomButton onClick={handleShowMore} type="show-more-button">
+                            <CustomButton onClick={handleShowMore}>
                                 Показать ещё
                             </CustomButton>
                         </div>

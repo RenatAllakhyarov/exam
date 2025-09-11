@@ -1,5 +1,5 @@
-import { type ReactElement, type ChangeEvent } from 'react';
-import './style.css';
+import { type ReactElement, type ChangeEvent } from "react";
+import "./style.css";
 
 interface ISelectOption {
     value: string | number;
@@ -13,7 +13,12 @@ interface ISelectProps {
     placeholder?: string;
 }
 
-const Select = ({ options, value, onChange, placeholder = "Выберите..." }: ISelectProps): ReactElement => {
+const Select = ({
+    options,
+    value,
+    onChange,
+    placeholder = "Выберите...",
+}: ISelectProps): ReactElement => {
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         onChange(event.target.value);
     };
@@ -31,7 +36,7 @@ const Select = ({ options, value, onChange, placeholder = "Выберите..." 
                         {placeholder}
                     </option>
                 )}
-                {options.map(option => (
+                {options.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>

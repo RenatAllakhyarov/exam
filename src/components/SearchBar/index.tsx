@@ -1,5 +1,5 @@
-import { type ReactElement, type ChangeEvent } from 'react';
-import './style.css';
+import { type ReactElement, type ChangeEvent } from "react";
+import "./style.css";
 
 interface ISearchBarProps {
     value: string;
@@ -7,7 +7,11 @@ interface ISearchBarProps {
     placeholder?: string;
 }
 
-const SearchBar = ({ value, onChange, placeholder = "Поиск..." }: ISearchBarProps): ReactElement => {
+const SearchBar = ({
+    value,
+    onChange,
+    placeholder = "Поиск...",
+}: ISearchBarProps): ReactElement => {
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     };

@@ -3,9 +3,9 @@ export type IPost = {
     id: number;
     title: string;
     body: string;
-}
+};
 
-export type IUser ={
+export type IUser = {
     id: number;
     name: string;
     username: string;
@@ -27,7 +27,7 @@ export type IUser ={
         catchPhrase: string;
         bs: string;
     };
-}
+};
 
 export type IComment = {
     postId: number;
@@ -35,25 +35,25 @@ export type IComment = {
     name: string;
     email: string;
     body: string;
-}
+};
 
 export type ITodo = {
     userId: number;
     id: number;
     title: string;
     completed: boolean;
-}
+};
 
 export type IAlbum = {
     userId: number;
     id: number;
     title: string;
-}
+};
 
-export type IPhoto ={
+export type IPhoto = {
     albumId: number;
     id: number;
     title: string;
     url: string;
     thumbnailUrl: string;
-}
+};

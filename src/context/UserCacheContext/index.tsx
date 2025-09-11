@@ -37,12 +37,15 @@ export const UsersCacheProvider = ({
     const fetchUsers = useCallback(async () => {
         setLoading(true);
         setError(null);
+
         try {
             const fetchedUsers = await usersApi.getUsers();
+
             setUsers(fetchedUsers);
-        } catch (err) {
-            console.error("Failed to fetch users:", err);
-            setError((err as Error).message);
+        } catch (error) {
+            console.error("Failed to fetch users:", error);
+
+            setError((error as Error).message);
         } finally {
             setLoading(false);
         }
@@ -54,11 +57,11 @@ export const UsersCacheProvider = ({
 
     const getUserNameById = useCallback(
         (userId: number): string => {
-            const user = users.find((u) => u.id === userId);
-            if (!user) {
+            const foundUser = users.find((user) => user.id === userId);
+            if (!foundUser) {
                 return `Пользователь ${userId} не найден`;
             }
-            return user.name;
+            return foundUser.name;
         },
         [users]
     );

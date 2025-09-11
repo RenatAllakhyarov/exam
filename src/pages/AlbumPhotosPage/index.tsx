@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
-import { type ReactElement } from 'react';
+import { useParams } from "react-router-dom";
+import { type ReactElement } from "react";
 
 const AlbumPhotosPage = (): ReactElement => {
     const { id } = useParams<{ id: string }>();

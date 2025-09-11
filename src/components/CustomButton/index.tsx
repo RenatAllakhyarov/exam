@@ -4,22 +4,14 @@ import "./style.css";
 interface ICustomButtonProps {
     onClick: () => void;
     children?: string | ReactNode;
-    type?: string;
-    disabled?: boolean;
 }
 
 const CustomButton = ({
     onClick,
     children,
-    type = "",
-    disabled = false,
 }: ICustomButtonProps): ReactElement => {
     return (
-        <button
-            className={`custom-button ${type}`}
-            onClick={onClick}
-            disabled={disabled}
-        >
+        <button className="custom-button" onClick={onClick}>
             {children}
         </button>
     );
