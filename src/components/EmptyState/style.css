@@ -1,0 +1,13 @@
+.empty-state-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    color: var(--secondary-components-color);
+    font-size: var(--font-size-body);
+}
+
+.empty-message {
+    color: var(--secondary-components-color);
+}

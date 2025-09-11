@@ -1,0 +1,29 @@
+.posts-page {
+    padding-top: 20px;
+}
+
+.posts-page .title-text {
+    color: var(--color-text-primary);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.filters-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    justify-content: space-between;
+}
+
+.filters-container > * { 
+    flex: 1; 
+    min-width: 250px; 
+}
+
+
+.post-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}

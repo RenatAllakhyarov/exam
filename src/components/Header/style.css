@@ -1,0 +1,16 @@
+.header {
+    background-color: var(--chat-header-background);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--chat-shadow);
+    color: var(--color-text-primary);
+}
+
+.header-controls {
+    display: flex;
+    gap: 15px;
+    color: var(--secondary-components-color);
+    font-size: var(--font-size-body);
+}

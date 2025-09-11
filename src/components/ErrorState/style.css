@@ -1,0 +1,29 @@
+.error-state-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    color: var(--color-text-primary);
+}
+
+.error-message {
+    margin-bottom: 15px;
+    color: var(--color-recording);
+    font-weight: 500;
+}
+
+.retry-button {
+    padding: 10px 20px;
+    font-size: var(--font-size-body);
+    background-color: var(--button-hover-background-color);
+    color: var(--color-text-primary);
+    border-radius: var(--content-radius-secondary);
+    cursor: pointer;
+    transition: background-color var(--transition-time);
+}
+
+.retry-button:hover {
+    background-color: var(--send-button-color);
+}

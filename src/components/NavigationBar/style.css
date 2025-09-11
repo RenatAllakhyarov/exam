@@ -1,0 +1,27 @@
+.navigation-bar {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--font-size-body);
+    padding: 8px 12px;
+    border-radius: var(--content-radius-secondary);
+    transition: background-color var(--transition-time), color var(--transition-time);
+    cursor: pointer;
+    outline: none;
+}
+
+.nav-button:hover {
+    background-color: var(--button-hover-background-color);
+}
+
+.nav-button.active {
+    background-color: var(--send-button-color);
+    color: var(--primary-font-color);
+}

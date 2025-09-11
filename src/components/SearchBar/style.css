@@ -1,0 +1,25 @@
+.search-bar-container {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--input-border-color);
+    border-radius: var(--content-radius-secondary);
+    background-color: var(--inactive-background-color);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-body);
+    outline: none;
+    transition: border-color var(--transition-time);
+}
+
+.search-input::placeholder {
+    color: var(--placeholder-color);
+}
+
+.search-input:focus {
+    border-color: var(--send-button-color); 
+    box-shadow: 0 0 0 2px rgba(213, 0, 195, 0.2); 
+}
