@@ -1,14 +1,13 @@
-import { jsonPlaceholderClient } from "../api/clients";
-import type { IUser } from "../types";
+import { jsonPlaceholderClient } from "./clients";
 
 class UsersApi {
-  getUsers() {
-    return jsonPlaceholderClient.get<IUser[]>("/users");
-  }
+    getUsers() {
+        return jsonPlaceholderClient.get("/users");
+    }
 
-  getUserById(id: number) {
-    return jsonPlaceholderClient.get<IUser>(`/users/${id}`);
-  }
+    getUserById(id: number) {
+        return jsonPlaceholderClient.get(`/users/${id}`);
+    }
 }
 
 export const usersApi = new UsersApi();

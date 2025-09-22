@@ -19,8 +19,8 @@ interface IUsersCacheContext {
     getUserNameById: (userId: number) => string;
 }
 
-const UsersCacheContext = createContext<IUsersCacheContext | undefined>(
-    undefined
+const UsersCacheContext = createContext<IUsersCacheContext>(
+    {} as IUsersCacheContext
 );
 
 interface IUsersCacheProviderProps {
@@ -33,6 +33,8 @@ export const UsersCacheProvider = ({
     const [users, setUsers] = useState<IUser[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const a = 10;
 
     const fetchUsers = useCallback(async () => {
         setLoading(true);

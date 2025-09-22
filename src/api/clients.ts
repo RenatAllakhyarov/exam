@@ -3,77 +3,56 @@ class ApiClient {
 
     constructor(baseUrl: string) {
         if (!baseUrl) {
-            throw new Error("Base URL is required for ApiClient.");
+            throw new Error("We can't get base URL for ApiClient");
         }
+
         this.baseUrl = baseUrl;
     }
 
-    private async request<T>(
-        endpoint: string,
-        options: RequestInit = {}
-    ): Promise<T> {
-        const url = `${this.baseUrl}${endpoint}`;
+    private async request(endpoint: string, method: string, data?: unknown) {
+        const url = this.baseUrl + endpoint;
 
-        const config: RequestInit = {
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                ...options.headers,
-            },
+        const options: RequestInit = {
+            method,
+            headers: { "Content-Type": "application/json" },
         };
 
-        try {
-            const response = await fetch(url, config);
-
-            if (!response.ok) {
-                const errorData = await response
-                    .json()
-                    .catch(() => ({ message: response.statusText }));
-                throw new Error(errorData.message || "Network error");
-            }
-
-            if (response.status === 204) {
-                return null as T;
-            }
-
-            return (await response.json()) as T;
-        } catch (error) {
-            console.error(`API Error on ${url}:`, error);
-
-            throw new Error(`Request failed: ${(error as Error).message}`);
+        if (data) {
+            options.body = JSON.stringify(data);
         }
+
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.body}`);
+        }
+
+        if (response.status === 204) {
+            //all is good, but we don't get data
+            return null;
+        }
+
+        return response.json();
     }
 
-    get<T>(endpoint: string, options?: RequestInit) {
-        return this.request<T>(endpoint, { ...options, method: "GET" });
+    get(endpoint: string) {
+        return this.request(endpoint, "GET");
     }
 
-    post<T>(endpoint: string, data: unknown, options?: RequestInit) {
-        return this.request<T>(endpoint, {
-            ...options,
-            method: "POST",
-            body: JSON.stringify(data),
-        });
+    post(endpoint: string, data: unknown) {
+        return this.request(endpoint, "POST", data);
     }
 
-    put<T>(endpoint: string, data: unknown, options?: RequestInit) {
-        return this.request<T>(endpoint, {
-            ...options,
-            method: "PUT",
-            body: JSON.stringify(data),
-        });
+    put(endpoint: string, data: unknown) {
+        return this.request(endpoint, "PUT", data);
     }
 
-    patch<T>(endpoint: string, data: unknown, options?: RequestInit) {
-        return this.request<T>(endpoint, {
-            ...options,
-            method: "PATCH",
-            body: JSON.stringify(data),
-        });
+    patch(endpoint: string, data: unknown) {
+        return this.request(endpoint, "PATCH", data);
     }
 
-    delete<T>(endpoint: string, options?: RequestInit) {
-        return this.request<T>(endpoint, { ...options, method: "DELETE" });
+    delete(endpoint: string) {
+        return this.request(endpoint, "DELETE");
     }
 }
 
