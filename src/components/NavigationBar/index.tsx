@@ -1,6 +1,7 @@
+import CustomButton from "@components/CustomButton";
 import { useNavigate } from "react-router-dom";
-import { paths } from "../../routes/routes";
 import { type ReactElement } from "react";
+import { paths } from "@routes/routes";
 import "./style.css";
 
 const NavigationBar = (): ReactElement => {
@@ -12,26 +13,11 @@ const NavigationBar = (): ReactElement => {
 
     return (
         <nav className="navigation-bar">
-            <button
+            <CustomButton
                 onClick={() => handleNavigation(paths.PostsPage.path)}
                 className={`nav-button ${paths.PostsPage.path ? "active" : ""}`}
-            >
-                Посты
-            </button>
-            <button
-                onClick={() => handleNavigation(paths.TodosPage.path)}
-                className={`nav-button ${paths.TodosPage.path ? "active" : ""}`}
-            >
-                Задачи
-            </button>
-            <button
-                onClick={() => handleNavigation(paths.AlbumsPage.path)}
-                className={`nav-button ${
-                    paths.AlbumsPage.path ? "active" : ""
-                }`}
-            >
-                Альбомы
-            </button>
+                label="Posts"
+            />
         </nav>
     );
 };

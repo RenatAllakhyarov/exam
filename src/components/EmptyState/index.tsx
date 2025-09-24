@@ -6,7 +6,7 @@ interface IEmptyStateProps {
 }
 
 const EmptyState = ({
-    message = "Ничего не найдено.",
+    message = "Oh, it's empty...",
 }: IEmptyStateProps): ReactElement => {
     return (
         <div className="empty-state-container">

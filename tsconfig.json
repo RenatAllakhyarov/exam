@@ -15,7 +15,7 @@
             "@Layouts/*": ["src/Layouts/*"],
             "@pages/*": ["src/pages/*"],
             "@routes/*": ["src/routes/*"],
-            "@types/*": ["src/types/*"],
+            "@appTypes/*": ["src/appTypes/*"]
         }
     }
 }

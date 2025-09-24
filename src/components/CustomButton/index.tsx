@@ -3,16 +3,18 @@ import "./style.css";
 
 interface ICustomButtonProps {
     onClick: () => void;
-    children?: string | ReactNode;
+    label?: string | ReactNode;
+    className?: string;
 }
 
 const CustomButton = ({
     onClick,
-    children,
+    label,
+    className = "",
 }: ICustomButtonProps): ReactElement => {
     return (
-        <button className="custom-button" onClick={onClick}>
-            {children}
+        <button className={`custom-button ${className}`} onClick={onClick}>
+            {label}
         </button>
     );
 };

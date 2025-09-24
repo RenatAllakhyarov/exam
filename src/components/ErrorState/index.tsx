@@ -1,18 +1,21 @@
-import { type ReactElement } from 'react';
-import './style.css';
+import { type ReactElement } from "react";
+import "./style.css";
 
 interface IErrorStateProps {
     message: string;
-    onRetry?: () => void;
+    onRepeat?: () => void;
 }
 
-const ErrorState = ({ message, onRetry }: IErrorStateProps): ReactElement => {
+const ErrorState = ({
+    message = "Server is not working...",
+    onRepeat,
+}: IErrorStateProps): ReactElement => {
     return (
         <div className="error-state-container">
-            <p className="error-message primary-text">Ошибка: {message}</p>
-            {onRetry && (
-                <button onClick={onRetry} className="retry-button nav-button">
-                    Повторить
+            <p className="error-message primary-text">Error: {message}</p>
+            {onRepeat && (
+                <button onClick={onRepeat} className="retry-button nav-button">
+                    Repeat?
                 </button>
             )}
         </div>

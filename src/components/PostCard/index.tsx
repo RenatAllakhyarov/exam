@@ -1,19 +1,16 @@
-import { useUsersCache } from "../../context/UserCacheContext";
+import CustomButton from "@components/CustomButton";
 import { useNavigate } from "react-router-dom";
-import { type ReactElement } from "react";
-import { paths } from "../../routes/routes";
-import { type IPost } from "../../types";
+import { type IPost } from "@appTypes/index";
+import { paths } from "@routes/routes";
 import "./style.css";
 
 interface IPostCardProps {
     post: IPost;
+    authorName: string;
 }
 
-const PostCard = ({ post }: IPostCardProps): ReactElement => {
+const PostCard = ({ post, authorName }: IPostCardProps) => {
     const navigate = useNavigate();
-    const { getUserNameById } = useUsersCache();
-
-    const authorName = getUserNameById(post.userId);
 
     const handleOpenPost = () => {
         navigate(`${paths.PostsPage.path}/${post.id}`);
@@ -28,15 +25,14 @@ const PostCard = ({ post }: IPostCardProps): ReactElement => {
         <div className="post-card">
             <h3 className="post-card-title title-text">{post.title}</h3>
             <p className="post-card-author secondary-text">
-                Автор: {authorName}
+                Author: {authorName}
             </p>
             <p className="post-card-body secondary-text">{shortBody}</p>
-            <button
+            <CustomButton
                 onClick={handleOpenPost}
                 className="open-post-button nav-button"
-            >
-                Открыть
-            </button>
+                label="Open"
+            />
         </div>
     );
 };

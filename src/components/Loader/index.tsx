@@ -1,11 +1,11 @@
-import { type ReactElement } from 'react';
-import './style.css';
+import { type ReactElement } from "react";
+import "./style.css";
 
 interface ILoaderProps {
     message?: string;
 }
 
-const Loader = ({ message = "Загрузка данных..." }: ILoaderProps): ReactElement => {
+const Loader = ({ message = "Loading..." }: ILoaderProps): ReactElement => {
     return (
         <div className="loader-container">
             <div className="spinner" />

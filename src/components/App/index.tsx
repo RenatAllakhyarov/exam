@@ -1,4 +1,4 @@
-import ApplicationRouter from "../../routes/index";
+import ApplicationRouter from "@routes/index";
 import { BrowserRouter as RouterProvider } from "react-router-dom";
 import { type ReactElement } from "react";
 import "@domains/Theme/style.css";

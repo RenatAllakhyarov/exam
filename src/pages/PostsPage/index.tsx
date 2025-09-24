@@ -1,174 +1,95 @@
-import Select from "../../components/Select";
-import Loader from "../../components/Loader";
-import PostCard from "../../components/PostCard";
-import SearchBar from "../../components/SearchBar";
-import ErrorState from "../../components/ErrorState";
-import EmptyState from "../../components/EmptyState";
-import CustomButton from "../../components/CustomButton";
-import useDebouncedValue from "../../hooks/useDebouncedValue";
-import { useUsersCache } from "../../context/UserCacheContext";
-import { postsApi } from "../../api/posts";
-import { type IPost } from "../../types";
-import {
-    type ReactElement,
-    useState,
-    useEffect,
-    useCallback,
-    useMemo,
-} from "react";
+import Loader from "@components/Loader";
+import PostCard from "@components/PostCard";
+import useDebounce from "@hooks/useDebounce";
+import ErrorState from "@components/ErrorState";
+import EmptyState from "@components/EmptyState";
+import CustomButton from "@components/CustomButton";
+import useFilteredPosts from "@hooks/useFilteredPosts";
+import { usePagination } from "@hooks/usePagination";
+import { usePosts } from "@hooks/usePosts";
+import { useState } from "react";
 import "./style.css";
+import Filters from "@components/Filters";
 
 const POSTS_PER_PAGE = 10;
 
-const PostsPage = (): ReactElement => {
-    const [allPosts, setAllPosts] = useState<IPost[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const [searchTerm, setSearchTerm] = useState<string>("");
-    const debouncedSearchTerm = useDebouncedValue(searchTerm, 300);
-
+const PostsPage = () => {
+    const { posts, users, loading, error } = usePosts();
+    const [search, setSearch] = useState("");
     const [selectedAuthorId, setSelectedAuthorId] = useState<string | number>(
         ""
     );
+    const debouncedSearch = useDebounce(search, 300);
+    const filteredPosts = useFilteredPosts(
+        posts,
+        debouncedSearch,
+        selectedAuthorId
+    );
+    const { postsToDisplay, showMorePosts, hasMorePosts } = usePagination(
+        filteredPosts,
+        POSTS_PER_PAGE,
+        [debouncedSearch, selectedAuthorId]
+    );
 
-    const { users, loading: usersLoading, error: usersError } = useUsersCache();
-
-    const [displayCount, setDisplayCount] = useState<number>(POSTS_PER_PAGE);
-
-    const fetchPosts = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const fetchedPosts = await postsApi.getPosts();
-            setAllPosts(fetchedPosts);
-        } catch (err) {
-            console.error("Failed to fetch posts:", err);
-            setError((err as Error).message);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!usersLoading && !usersError) {
-            fetchPosts();
-        }
-    }, [usersLoading, usersError, fetchPosts]);
-
-    useEffect(() => {
-        setDisplayCount(POSTS_PER_PAGE);
-    }, [debouncedSearchTerm, selectedAuthorId]);
-
-    const authorOptions = useMemo(() => {
-        if (!users) {
-            return [];
-        }
-        const allAuthorsOption = { value: "", label: "Все авторы" };
-        return [
-            allAuthorsOption,
-            ...users.map((user) => ({ value: user.id, label: user.name })),
-        ];
-    }, [users]);
-
-    const filteredPosts = useMemo(() => {
-        if (!allPosts) {
-            return [];
-        }
-        let currentFilteredPosts = allPosts;
-
-        if (debouncedSearchTerm) {
-            currentFilteredPosts = currentFilteredPosts.filter((post) =>
-                post.title
-                    .toLowerCase()
-                    .includes(debouncedSearchTerm.toLowerCase())
-            );
-        }
-
-        if (selectedAuthorId) {
-            const authorIdNum = Number(selectedAuthorId);
-            if (!isNaN(authorIdNum)) {
-                currentFilteredPosts = currentFilteredPosts.filter(
-                    (post) => post.userId === authorIdNum
-                );
-            }
-        }
-
-        return currentFilteredPosts;
-    }, [allPosts, debouncedSearchTerm, selectedAuthorId]);
-
-    const postsToDisplay = useMemo(() => {
-        return filteredPosts.slice(0, displayCount);
-    }, [filteredPosts, displayCount]);
-
-    const handleShowMore = () => {
-        setDisplayCount((prevCount) => prevCount + POSTS_PER_PAGE);
-    };
-
-    const hasMorePosts = displayCount < filteredPosts.length;
-
-    if (loading || usersLoading) {
-        return <Loader message="Загрузка постов..." />;
+    if (loading) {
+        return <Loader message="Posts loading..." />;
     }
 
     if (error) {
         return (
             <ErrorState
-                message={`Ошибка загрузки постов: ${error}`}
-                onRetry={fetchPosts}
+                message={`Error: ${error}`}
+                onRepeat={() => window.location.reload()}
             />
         );
     }
 
-    if (usersError) {
-        return (
-            <ErrorState
-                message={`Ошибка загрузки данных пользователей: ${usersError}`}
-                onRetry={() => window.location.reload()}
-            />
-        );
-    }
+    const authorOptions = [
+        { value: "", label: "All authors" },
+        ...users.map((user) => ({ value: user.id, label: user.name })),
+    ];
+
+    const emptyMessage =
+        debouncedSearch || selectedAuthorId
+            ? "No posts match your criteria."
+            : "There are no posts at the moment.";
+
+    const getAuthorName = (userId: number) => {
+        const author = users.find((user) => user.id === userId);
+        return author ? author.name : `Author: ${userId}`;
+    };
 
     return (
         <div className="posts-page">
-            <h1 className="title-text">Лента постов</h1>
-            <div className="filters-container">
-                <SearchBar
-                    value={searchTerm}
-                    onChange={setSearchTerm}
-                    placeholder="Поиск по заголовку..."
-                />
-                <Select
-                    options={authorOptions}
-                    value={selectedAuthorId}
-                    onChange={setSelectedAuthorId}
-                    placeholder="Фильтр по автору"
-                />
-            </div>
-
-            {postsToDisplay.length === 0 ? (
-                <EmptyState
-                    message={
-                        debouncedSearchTerm || selectedAuthorId
-                            ? "Посты не найдены по заданным критериям."
-                            : "На данный момент постов нет."
-                    }
-                />
-            ) : (
-                <>
-                    <div className="post-list">
-                        {postsToDisplay.map((post) => (
-                            <PostCard key={post.id} post={post} />
-                        ))}
-                    </div>
-                    {hasMorePosts && (
-                        <div className="show-more-container">
-                            <CustomButton onClick={handleShowMore}>
-                                Показать ещё
-                            </CustomButton>
-                        </div>
-                    )}
-                </>
+            <h1 className="title-text">Posts</h1>
+            <Filters
+                search={search}
+                setSearch={setSearch}
+                selectedAuthorId={selectedAuthorId}
+                setSelectedAuthorId={setSelectedAuthorId}
+                authorOptions={authorOptions}
+            />
+            {postsToDisplay.length === 0 && (
+                <EmptyState message={emptyMessage} />
+            )}
+            {postsToDisplay.length > 0 && (
+                <div className="posts-list">
+                    {postsToDisplay.map((post) => (
+                        <PostCard
+                            key={post.id}
+                            post={post}
+                            authorName={getAuthorName(post.userId)}
+                        />
+                    ))}
+                </div>
+            )}
+            {hasMorePosts && (
+                <div className="show-more-container">
+                    <CustomButton
+                        onClick={showMorePosts}
+                        label="Show more posts"
+                    />
+                </div>
             )}
         </div>
     );
