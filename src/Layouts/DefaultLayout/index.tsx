@@ -1,14 +1,15 @@
 import Header from "@components/Header";
 import { type ReactElement } from "react";
-import { Outlet } from "react-router-dom";
 
-const DefaultLayout = (): ReactElement => {
+interface IDefaultLayoutProps {
+    children: ReactElement;
+}
+
+const DefaultLayout = ({ children }: IDefaultLayoutProps): ReactElement => {
     return (
         <div className="default-layout">
             <Header />
-            <main className="app-content">
-                <Outlet />
-            </main>
+            <main className="app-content">{children}</main>
         </div>
     );
 };

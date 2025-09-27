@@ -1,6 +1,5 @@
 import PostsPage from "@pages/PostsPage";
 import NotFoundPage from "@pages/NotFoundPage";
-import DefaultLayout from "@Layouts/DefaultLayout";
 import PostDetailsPage from "@pages/PostDetailsPage";
 import type { RouteObject } from "react-router-dom";
 
@@ -25,25 +24,20 @@ export const paths = {
 
 const routes: RouteObject[] = [
     {
-        element: <DefaultLayout />,
-        children: [
-            {
-                ...paths.Home,
-                element: <PostsPage />,
-            },
-            {
-                ...paths.PostDetailsPage,
-                element: <PostDetailsPage />,
-            },
-            {
-                ...paths.PostsPage,
-                element: <PostsPage />,
-            },
-            {
-                ...paths.NotFoundPage,
-                element: <NotFoundPage />,
-            },
-        ],
+        ...paths.Home,
+        element: <PostsPage />,
+    },
+    {
+        ...paths.PostDetailsPage,
+        element: <PostDetailsPage />,
+    },
+    {
+        ...paths.PostsPage,
+        element: <PostsPage />,
+    },
+    {
+        ...paths.NotFoundPage,
+        element: <NotFoundPage />,
     },
 ];
 

@@ -1,4 +1,5 @@
 import Loader from "@components/Loader";
+import Filters from "@components/Filters";
 import PostCard from "@components/PostCard";
 import useDebounce from "@hooks/useDebounce";
 import ErrorState from "@components/ErrorState";
@@ -9,7 +10,6 @@ import { usePagination } from "@hooks/usePagination";
 import { usePosts } from "@hooks/usePosts";
 import { useState } from "react";
 import "./style.css";
-import Filters from "@components/Filters";
 
 const POSTS_PER_PAGE = 10;
 
@@ -56,7 +56,7 @@ const PostsPage = () => {
 
     const getAuthorName = (userId: number) => {
         const author = users.find((user) => user.id === userId);
-        return author ? author.name : `Author: ${userId}`;
+        return author?.name ?? `Author: ${userId}`;
     };
 
     return (
@@ -69,10 +69,10 @@ const PostsPage = () => {
                 setSelectedAuthorId={setSelectedAuthorId}
                 authorOptions={authorOptions}
             />
-            {postsToDisplay.length === 0 && (
+            {!postsToDisplay?.length && (
                 <EmptyState message={emptyMessage} />
             )}
-            {postsToDisplay.length > 0 && (
+            {postsToDisplay?.length && (
                 <div className="posts-list">
                     {postsToDisplay.map((post) => (
                         <PostCard
