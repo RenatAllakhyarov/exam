@@ -7,9 +7,10 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
+            "@utils/*": ["src/utils/*"],
             "@api/*": ["src/api/*"],
             "@components/*": ["src/components/*"],
-            "@context/*": ["src/context/*"],
+            "@contexts/*": ["src/contexts/*"],
             "@domains/*": ["src/domains/*"],
             "@hooks/*": ["src/hooks/*"],
             "@Layouts/*": ["src/Layouts/*"],

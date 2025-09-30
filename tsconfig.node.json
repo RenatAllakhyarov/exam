@@ -23,9 +23,10 @@
 
         "baseUrl": ".",
         "paths": {
+            "@utils/*": ["src/utils/*"],
+            "@contexts/*": ["src/contexts/*"],
             "@api/*": ["src/api/*"],
             "@components/*": ["src/components/*"],
-            "@context/*": ["src/context/*"],
             "@domains/*": ["src/domains/*"],
             "@hooks/*": ["src/hooks/*"],
             "@Layouts/*": ["src/Layouts/*"],

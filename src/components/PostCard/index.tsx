@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { type IPost } from "@appTypes/index";
 import { paths } from "@routes/routes";
 import "./style.css";
+import { memo } from "react";
 
 interface IPostCardProps {
     post: IPost;
     authorName: string;
 }
 
-const PostCard = ({ post, authorName }: IPostCardProps) => {
+const PostCard = memo(({ post, authorName }: IPostCardProps) => {
+    console.log("POST RENDERED!");
+
     const navigate = useNavigate();
 
     const handleOpenPost = () => {
@@ -35,6 +38,6 @@ const PostCard = ({ post, authorName }: IPostCardProps) => {
             />
         </div>
     );
-};
+});
 
 export default PostCard;
