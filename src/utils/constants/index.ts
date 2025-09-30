@@ -6,6 +6,10 @@ export const TIMER_OF_DEBOUNCE_MS = 300;
 
 export const KEY = "postsPageFilters";
 
+export const DEFAULT_SEARCHER_PLACEHOLDER = "Search by title...";
+
+export const DEFAULT_SELECT_PLACEHOLDER = "Filter by author";
+
 export const filteredPosts = (
     posts: IPost[],
     search: string,

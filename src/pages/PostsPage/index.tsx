@@ -1,5 +1,5 @@
 import Loader from "@components/Loader";
-import Filters from "@components/Filters";
+import ToolBar from "@components/ToolBar";
 import PostCard from "@components/PostCard";
 import useDebounce from "@hooks/useDebounce";
 import ErrorState from "@components/ErrorState";
@@ -18,16 +18,16 @@ import "./style.css";
 
 const PostsPage = () => {
     const { posts, users, loading, error } = usePostsAndUsers();
-    
+
     const savedFilters = JSON.parse(localStorage.getItem(KEY) || "{}");
-    
+
     const [search, setSearch] = useState(savedFilters.search || "");
     const [selectedAuthorId, setSelectedAuthorId] = useState<string | number>(
         savedFilters.selectedAuthorId || ""
     );
-    
+
     const debouncedSearch = useDebounce(search, TIMER_OF_DEBOUNCE_MS);
-    
+
     const filteredPosts = useMemo(() => {
         return useFilteredPosts(posts, debouncedSearch, selectedAuthorId);
     }, [posts, debouncedSearch, selectedAuthorId]);
@@ -76,7 +76,7 @@ const PostsPage = () => {
     return (
         <div className="posts-page">
             <h1 className="title-text">Posts</h1>
-            <Filters
+            <ToolBar
                 search={search}
                 setSearch={setSearch}
                 selectedAuthorId={selectedAuthorId}
